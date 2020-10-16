@@ -1,0 +1,18 @@
+.form{
+    position: relative;
+    top: 30%;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    border: black;
+    padding: 20px 10px 10px;
+    background-color: rgba(174, 243, 220, 0.575);
+}
+.form form label{
+    padding: 10px 10px;
+    color: black;
+    border-radius: 20px;
+}
+.form form input:hover{
+    background-color: white;
+}
