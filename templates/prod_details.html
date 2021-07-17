@@ -8,8 +8,9 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Shop Item - Start Bootstrap Template</title>
-
+  <title>Merokitab - An online book store.</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <!-- Bootstrap core CSS -->
   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
@@ -23,14 +24,14 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Start Bootstrap</a>
+      <a class="navbar-brand" href="{% url 'home' %}">Merokitab</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home
+            <a class="nav-link" href="{% url 'home' %}">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
@@ -41,7 +42,18 @@
             <a class="nav-link" href="#">Services</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
+            <a class="nav-link" href="{% url 'contactus' %}">Contact</a>
+          </li>
+              <li class="nav-item">
+          {% if request.user.is_authenticated %}
+            <a class="nav-link text-black font-weight-bold" href="{% url 'logout' %}">Logout</a>
+          {% else %}
+            <a class="nav-link text-black font-weight-bold" href="{% url 'login_view' %}">Login</a>
+          {% endif %}
+            
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Profile</a>
           </li>
         </ul>
       </div>
@@ -49,49 +61,74 @@
   </nav>
 
   <!-- Page Content -->
+  
   <div class="container">
 
     <div class="row">
-
-      <div class="col-lg-3">
-        <h1 class="my-4">Shop Name</h1>
-        <div class="list-group">
-          <a href="#" class="list-group-item active">Category 1</a>
-          <a href="#" class="list-group-item">Category 2</a>
-          <a href="#" class="list-group-item">Category 3</a>
-        </div>
-      </div>
-      <!-- /.col-lg-3 -->
-
       <div class="col-lg-9">
-
+         <!-- /.card -->
+          
         <div class="card mt-4">
-          <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
+          <img class="card-img-top img-fluid" src="{{ produc.photo.url }}" alt="">
           <div class="card-body">
-            <h3 class="card-title">Product Name</h3>
-            <h4>$24.99</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente dicta fugit fugiat hic aliquam itaque facere, soluta. Totam id dolores, sint aperiam sequi pariatur praesentium animi perspiciatis molestias iure, ducimus!</p>
-            <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-            4.0 stars
+            <h3 class="card-title">{{ produc.name }}</h3>
+            <h4>NPR: {{ produc.price }}</h4>
+            <p class="card-text">Posted by: {{ produc.posted_by }}</p>
+            <p class="card-text">Published by: {{ produc.publication }}</p>
+            <p class="card-text">Written by: {{ produc.author }}</p>
+            <p class="card-text">{{ produc.details }}</p>
+            
+            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">View Details</a>
+            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Buy This Book</a>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p class="card-text">ISBN No.: {{ produc.ISBN }}</p>
+                    <p class="card-text">Abstract: {{ produc.abstract }}</p>
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
           </div>
+          
         </div>
-        <!-- /.card -->
-
         <div class="card card-outline-secondary my-4">
           <div class="card-header">
-            Product Reviews
+            {{ rev.count }} Comments
           </div>
+          {% for rev in rev %}
           <div class="card-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-            <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-            <hr>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-            <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-            <hr>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-            <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-            <hr>
-            <a href="#" class="btn btn-success">Leave a Review</a>
+            <p>{{ rev.comment }}</p>
+            <small class="text-muted">Posted by {{rev.user}} on {{rev.created_date}}</small>
+            <hr> 
+          </div>
+        
+          {% endfor %}
+        </div>
+            <div class="col-md-8 card mb-4  mt-3 ">
+              <div class="card-body">
+                <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+                <h3>Leave a comment</h3>
+                <form method="post" style="margin-top: 1.3em;">
+                  {{ comment_form.as_p }}
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+                </form>
+              </div>
+              </div>
+            </div>
           </div>
         </div>
         <!-- /.card -->
@@ -114,7 +151,10 @@
 
   <!-- Bootstrap core JavaScript -->
   <script src="{% static 'jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 </body>
 

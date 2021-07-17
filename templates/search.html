@@ -58,7 +58,7 @@
             
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'userprofile' %}">Profile</a>
+            <a class="nav-link" href="#">Profile</a>
           </li>
         </ul>
       </div>
@@ -70,26 +70,6 @@
   <div class="container">
 
     <div class="row">
-
-      <div class="col-lg-3">
-
-        <h1 class="my-4">Search Books</h1>
-       
-        <!-- Search form -->
-    <form method="POST" action="{% url 'search' %}">
-          {% csrf_token %}
-      <div class="md-form mt-0">
-        <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="searched">
-      </div>
-      <div>
-       <a href="{% url 'search' %}"> <button type="button" class="btn btn-primary btn-lg" style="align-self: center;">Search Books</button></a>
-      </div>
-    </form>
-       <div id="list-example" class="list-group">
-        <a class="list-group-item list-group-item-action" href="#list-item-1">Category 1</a>
-        
-      </div>
-      </div>
       
       <!-- /.col-lg-3 -->
 
@@ -103,13 +83,13 @@
           </ol>
           <div class="carousel-inner" role="listbox">
             <div class="carousel-item active">
-              <img class="d-block img-fluid" src="/static/image/car1.jpg" alt="First slide">
+              <img class="d-block img-fluid" src="/static/image/care1.jpg" alt="First slide">
             </div>
             <div class="carousel-item">
-              <img class="d-block img-fluid" src="/static/image/car2.jpeg" alt="Second slide">
+              <img class="d-block img-fluid" src="/static/image/care2.jpg" alt="Second slide">
             </div>
             <div class="carousel-item">
-              <img class="d-block img-fluid" src="/static/image/car3.jpg" alt="Third slide">
+              <img class="d-block img-fluid" src="/static/image/care3.jpg" alt="Third slide">
             </div>
           </div>
           <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -121,28 +101,31 @@
             <span class="sr-only">Next</span>
           </a>
         </div>
+        {% if searched %}
+        <h1>Search Results for {{ searched }} are .....</h1>
+        {% else %}
+        <h1>You haven't searched anything!! </h1>
+        {% endif %}
        
-        <div class="row">
-          {% for q in query %}
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="{{ q.photo.url }}" alt=""></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="{% url 'prod_detail' q.id %}">{{ q.name }}</a>
-                </h4>
-                
-                <p class="card-text">{{ q.details }}</p>
-                <p class="card-text">{{ q.posted_by }}</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted"><h5>Npr. {{ q.price }}</h5></small>
+        <div class="row"> 
+            {% for r in res %}
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="card h-100">
+                <a href="#"><img class="card-img-top" src="{{ r.photo.url }}" alt=""></a>
+                <div class="card-body">
+                  <h4 class="card-title">
+                    <a href="{% url 'prod_detail' r.id %}">{{ r.name }}</a>
+                  </h4>
+                  
+                  <p class="card-text">{{ r.details }}</p>
+                  <p class="card-text">{{ r.posted_by }}</p>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted"><h5>Npr. {{ r.price }}</h5></small>
+                </div>
               </div>
             </div>
-          </div>
-          {% endfor %}
-
-          
+            {% endfor %}
         </div>
         <!-- /.row -->
 

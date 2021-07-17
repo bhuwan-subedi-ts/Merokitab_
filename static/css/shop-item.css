@@ -6,3 +6,10 @@
 body {
   padding-top: 56px;
 }
+.checked {
+  color: rgb(248, 73, 3);
+}
+.my-btn{
+  background-color: inherit !important;
+  border: 0 !important; 
+}
