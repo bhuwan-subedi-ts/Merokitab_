@@ -1,10 +1,11 @@
 from django.db import models
+from django.http.response import JsonResponse
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.models import User
-from home.models import Product,Contact
-from home.forms import CreateUserForm,AddProductForm
+from home.models import Product,Contact,Category
+from home.forms import CreateUserForm,AddProductForm,ReviewForm
 from django.contrib import messages
 
 # Create your views here.
@@ -12,7 +13,9 @@ from django.contrib import messages
 def home(request): 
     query = Product.objects.all()
     qu = Product.objects.values_list('category',flat=True)
-    context = {'query':query,'qu':qu}
+    list = Category.objects.all()
+
+    context = {'query':query,'qu':qu, 'list':list}
     
     return render(request,'homepage.html',context)
 
@@ -56,6 +59,16 @@ def logoutUser(request):
     logout(request)
     return redirect('/login')
 
+def userprofile(request):
+    return render(request,'userprofile.html')
+
+def search(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        res = Product.objects.filter(name__contains=searched)
+        return render(request,'search.html',{'searched':searched,'res':res})
+    
+    return render(request,'search.html')
 
 def signup_view(request):
     form = CreateUserForm()
@@ -70,34 +83,21 @@ def signup_view(request):
 
     context = {'form':form}
     return render(request,'signup.html',context)
-    #if request.method == 'POST':
-        #storing the data obtained from contact me page in variables.
-        #name = request.POST['name']
-        #state = request.POST['state']
-        #district = request.POST['district']
-        #town = request.POST['town']
-        #ward = request.POST['ward']
-        #prof = request.POST['prof']
-        #nterest = request.POST['interest']
-        #email = request.POST['email']
-        #phone = request.POST['phone']
-        #password = request.POST['password']
-        #cnfpassword = request.POST['cnfpassword']
-       #store image file here
-        #creating an instance and saving the data to database
-        #if password == cnfpassword:  
-        #    user = User(name=name,add_state=state,add_district=district,add_town=town,add_ward=ward,prof=prof,interest=interest,email=email,phone_number=phone,password=password)
-        #    user.save()
-        #    print("data Saved!")
-        #    return render(request,'login.html')
-        #else:
-        #    print("password doesn't match")
+def prod_detail(request,pk):
+    produc = Product.objects.get(id=pk)
+    rev = produc.comments.all()
+    comment_form = ReviewForm(data=request.POST)
+    new_comment=None
+    if request.method == 'POST':
+        if comment_form.is_valid():
+            new_comment=comment_form.save(commit=False)
+            new_comment.product = produc
+            new_comment.user = request.user
+            new_comment.save()
+    context = { 'produc':produc,'comment_form':comment_form,'rev':rev,'new_comment':new_comment }
+    return render(request,'prod_details.html',context)
 
-    #return render(request,'signup.html')
-    
-    
-    
-
+        
 def contactus(request):
     if request.method=="POST":
         #storing the data obtained from contact me page in variables.        
@@ -108,14 +108,11 @@ def contactus(request):
         #creating an instance and saving the data to database
         contact = Contact(name=name,email=email,phone=phone,desc=desc)
         contact.save()
-        #print("the data saved successfully!")
-        
-        #sender_name = name
-        #sender_email = email
-        #descAndnum = desc + " : " + "Phone Number = "+phone + " Email = "+email
-
-        #message = "{0} has sent you a new message:\n\n{1}".format(sender_name, descAndnum)
-        
-        #send_mail('New Enquiry In Portfolio', message, sender_email, ['ghimirebibek75235@gmail.com'], fail_silently= False)
     
     return render(request,'contact.html')
+
+def category_view(request, cats):
+
+    post = Product.objects.filter(category = cats)
+
+    return render(request,'category.html', {'post':post, 'cats':cats})
