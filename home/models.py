@@ -18,9 +18,39 @@ class Profile(models.Model):
     ward_no = models.IntegerField()
     local_add = models.CharField(max_length=50)
 
+class Category(models.Model):
+    FICTION = 'Fiction'
+    ENGINEERING = 'Engineering'
+    SCIENCE = 'Science'
+    MANAGEMENT = 'Management'
+    LITERATURE = 'Literature'
+    ARTS = 'Arts'
+    SCHOOL = 'School'
+    RELIGION = 'Religion'
+    ENTRANCE = 'Entrance'
+    GOVERNMENT = 'Government'
+    MISC = 'Miscellenous'
+    LAW = 'Law'
+    
+    CATEGORY_CHOICES = [
+        (FICTION, 'Fiction'),
+        (ENGINEERING, 'Engineering'),
+        (SCIENCE, 'Science'),
+        (MANAGEMENT, 'Management'),
+        (LITERATURE, 'Literature'),
+        (ARTS, 'Arts'),
+        (SCHOOL, 'School Level'),
+        (RELIGION, 'Religion'),
+        (LAW, 'Law'),
+        (ENTRANCE, 'Entrance Preparation'),
+        (GOVERNMENT,'Government Jobs'),
+        (MISC, 'Miscelleneous'),
+    ]
 
+    category = models.CharField(choices=CATEGORY_CHOICES,max_length=100,default=MISC)
 
-
+    def __str__(self):
+        return (self.category)
 
 class Product(models.Model):
     FICTION = 'Fiction'
@@ -63,7 +93,10 @@ class Product(models.Model):
     featured = models.BooleanField(null=True)
     abstract = models.TextField(default='This is the abstract')
     status = models.BooleanField(default='True')
-    
+
+    def __str__(self):
+        return (self.name)
+
 class admin(models.Model):
     name = models.CharField(max_length=100)
     password = models.CharField(max_length=50)

@@ -85,10 +85,11 @@
        <a href="{% url 'search' %}"> <button type="button" class="btn btn-primary btn-lg" style="align-self: center;">Search Books</button></a>
       </div>
     </form>
-       <div id="list-example" class="list-group">
-        <a class="list-group-item list-group-item-action" href="#list-item-1">Category 1</a>
-        
+      {% for s in list%}
+      <div class="list-group">
+        <a href="/category/{{s}}" class="list-group-item">{{s}}</a>
       </div>
+      {% endfor %}
       </div>
       
       <!-- /.col-lg-3 -->

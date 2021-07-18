@@ -4,7 +4,7 @@ from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.models import User
-from home.models import Product,Contact
+from home.models import Product,Contact,Category
 from home.forms import CreateUserForm,AddProductForm,ReviewForm
 from django.contrib import messages
 
@@ -13,7 +13,9 @@ from django.contrib import messages
 def home(request): 
     query = Product.objects.all()
     qu = Product.objects.values_list('category',flat=True)
-    context = {'query':query,'qu':qu}
+    list = Category.objects.all()
+
+    context = {'query':query,'qu':qu, 'list':list}
     
     return render(request,'homepage.html',context)
 
@@ -108,3 +110,9 @@ def contactus(request):
         contact.save()
     
     return render(request,'contact.html')
+
+def category_view(request, cats):
+
+    post = Product.objects.filter(category = cats)
+
+    return render(request,'category.html', {'post':post, 'cats':cats})
