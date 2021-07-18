@@ -57,6 +57,7 @@
       </div>
     </div>
   </nav>
+  {% if request.user.is_authenticated %}
   <div class="form">
     <form action="" method="post" enctype="multipart/form-data">
       
@@ -75,6 +76,11 @@
       <input type="submit" value="Add Product" style="position: relative; left: 200px; background-color: salmon; border-radius: 20px;">
     </form>
   </div>
+  {% else %}
+  <div class="m-0 text-center text-white">
+    <h3>Please Login or Register to Add Books.....!</h3>
+  </div>
+  {% endif %}
    <!-- Footer -->
    <footer class="py-5 bg-dark">
     <div class="container">

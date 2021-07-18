@@ -40,8 +40,10 @@ def addproduct(request):
 
 
 def login_view(request):
+    qu = Product.objects.values_list('category',flat=True)
+    list = Category.objects.all()
     query = Product.objects.all()
-    context = {'query':query}
+    context = {'query':query,'qu':qu,'list':list}
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -53,7 +55,7 @@ def login_view(request):
             return render(request,'homepage.html',context)
     
     
-    return render(request,'login.html')
+    return render(request,'login.html',context)
 
 def logoutUser(request):
     logout(request)

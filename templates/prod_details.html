@@ -69,14 +69,14 @@
          <!-- /.card -->
           
         <div class="card mt-4">
-          <img class="card-img-top img-fluid" src="{{ produc.photo.url }}" alt="">
+          <img class="card-img-top img-fluid" src="{{ produc.photo.url }}" alt="" style="height: auto; width: 70%;">
           <div class="card-body">
             <h3 class="card-title">{{ produc.name }}</h3>
             <h4>NPR: {{ produc.price }}</h4>
             <p class="card-text">Posted by: {{ produc.posted_by }}</p>
             <p class="card-text">Published by: {{ produc.publication }}</p>
             <p class="card-text">Written by: {{ produc.author }}</p>
-            <p class="card-text">{{ produc.details }}</p>
+            
             
             <a href="#" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">View Details</a>
             <a href="#" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Buy This Book</a>
@@ -92,6 +92,8 @@
                   <div class="modal-body">
                     <p class="card-text">ISBN No.: {{ produc.ISBN }}</p>
                     <p class="card-text">Abstract: {{ produc.abstract }}</p>
+                    <p class="card-text">{{ produc.details }}</p>
+                    
                     
                   </div>
                   <div class="modal-footer">
@@ -116,6 +118,7 @@
           </div>
         
           {% endfor %}
+        {% if request.user.is_authenticated %}
         </div>
             <div class="col-md-8 card mb-4  mt-3 ">
               <div class="card-body">
@@ -131,6 +134,9 @@
             </div>
           </div>
         </div>
+        {% else %}
+        <h3>Hey....You have to Login to post a comment</h3>
+        {% endif %}
         <!-- /.card -->
 
       </div>
